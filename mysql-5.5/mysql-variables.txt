@@ -18,3 +18,5 @@ innodb_large_prefix	ON
 innodb_log_buffer_size	8388608
 innodb_log_file_size	134217728
 max_allowed_packet	134217728
+query_cache_size	33554432
+query_cache_type	ON
