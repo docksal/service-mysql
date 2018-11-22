@@ -1,4 +1,4 @@
-FROM mysql:8.0
+FROM mysql:8.0.13
 
 # MySQL settings
 COPY default.cnf /etc/mysql/conf.d/10-default.cnf
@@ -10,3 +10,7 @@ RUN set -xe; \
 	sed -i '/\$(id -u)/ r /usr/local/bin/docker-entrypoint.d.sh' /usr/local/bin/docker-entrypoint.sh
 # Init scripts run under root
 COPY docker-entrypoint.d /docker-entrypoint.d
+COPY healthcheck.sh /opt/healthcheck.sh
+
+# Health check script
+HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/opt/healthcheck.sh"]

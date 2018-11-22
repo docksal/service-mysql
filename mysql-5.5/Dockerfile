@@ -1,4 +1,4 @@
-FROM mysql:5.5
+FROM mysql:5.5.61
 
 # MySQL settings
 COPY default.cnf /etc/mysql/conf.d/10-default.cnf
@@ -10,6 +10,10 @@ RUN set -xe; \
 	sed -i '/\$(id -u)/ r /usr/local/bin/docker-entrypoint.d.sh' /usr/local/bin/docker-entrypoint.sh
 # Init scripts run under root
 COPY docker-entrypoint.d /docker-entrypoint.d
+COPY healthcheck.sh /opt/healthcheck.sh
 
 # Fix PATH to include MySQL 5.5 binaries
 RUN echo 'PATH=$PATH:/usr/local/mysql/bin:/usr/local/mysql/scripts' >> /etc/profile
+
+# Health check script
+HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/opt/healthcheck.sh"]
