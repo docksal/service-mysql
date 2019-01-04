@@ -1,9 +1,6 @@
-sudo: required
+dist: xenial
 
-language: generic
-
-services:
-  - docker
+language: minimal
 
 env:
   global:
