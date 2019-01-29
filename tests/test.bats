@@ -62,6 +62,11 @@ _healthcheck_wait ()
 	make start -e VOLUMES="-v $(pwd)/tests:/var/www"
 	_healthcheck_wait
 
+	### Tests ###
+	# MySQL does a restart, so there should be two of these in the logs after a successful start
+	run bash -c 'make logs 2>&1 | grep "mysqld: ready for connections" | wc -l'
+	[[ "$output" =~ "2" ]]
+	unset output
 }
 
 @test "Default database present" {
@@ -69,6 +74,7 @@ _healthcheck_wait ()
 
 	run make mysql-query QUERY='SHOW DATABASES;'
 	[[ "$output" =~ "default" ]]
+	unset output
 }
 
 @test "Check variables" {
@@ -81,6 +87,7 @@ _healthcheck_wait ()
 	# This will trigger a diff only when a variable from mysql-variables.txt is missing or modified in $mysqlVars
 	run bash -c "echo '$mysqlVars' | diff --changed-group-format='%<' --unchanged-group-format='' mysql-${VERSION}/mysql-variables.txt -"
 	[[ "$output" == "" ]]
+	unset output
 }
 
 @test "Configuration overrides" {
