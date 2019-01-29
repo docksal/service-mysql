@@ -81,7 +81,7 @@ _healthcheck_wait ()
 	[[ $SKIP == 1 ]] && skip
 
 	# Grab variables from the container
-	# -s used to supress echoing of the actual make command
+	# -s used to suppress echoing of the actual make command
 	mysqlVars=$(make -s mysql-query QUERY='SHOW VARIABLES;')
 	# Compare with the expected values
 	# This will trigger a diff only when a variable from mysql-variables.txt is missing or modified in $mysqlVars
