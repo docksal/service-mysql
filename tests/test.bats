@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # Debugging
-teardown() {
+teardown () {
 	echo
 	echo "Output:"
 	echo "================================================================"
@@ -19,9 +19,9 @@ _healthcheck ()
 	# Wait for 5s then exit with 0 if a container does not have a health status property
 	# Necessary for backward compatibility with images that do not support health checks
 	if [[ $? != 0 ]]; then
-	echo "Waiting 10s for container to start..."
-	sleep 10
-	return 0
+		echo "Waiting 10s for container to start..."
+		sleep 10
+		return 0
 	fi
 
 	# If it does, check the status
@@ -59,7 +59,7 @@ _healthcheck_wait ()
 	[[ $SKIP == 1 ]] && skip
 
 	### Setup ###
-	make start -e VOLUMES="-v $(pwd)/../tests:/var/www"
+	make start -e VOLUMES="-v $(pwd)/tests:/var/www"
 	_healthcheck_wait
 
 	### Tests ###
@@ -85,7 +85,7 @@ _healthcheck_wait ()
 	mysqlVars=$(make -s mysql-query QUERY='SHOW VARIABLES;')
 	# Compare with the expected values
 	# This will trigger a diff only when a variable from mysql-variables.txt is missing or modified in $mysqlVars
-	run bash -c "echo '$mysqlVars' | diff --changed-group-format='%<' --unchanged-group-format='' mysql-variables.txt -"
+	run bash -c "echo '$mysqlVars' | diff --changed-group-format='%<' --unchanged-group-format='' ${VERSION}/mysql-variables.txt -"
 	[[ "$output" == "" ]]
 	unset output
 }
@@ -94,7 +94,7 @@ _healthcheck_wait ()
 	[[ $SKIP == 1 ]] && skip
 
 	# Check the custom settings file is in place
-	run make exec -e CMD='cat /etc/mysql/conf.d/99-overrides.cnf'
+	run make exec CMD="cat /etc/mysql/conf.d/99-overrides.cnf"
 	[[ "$output" =~ "slow_query_log = ON" ]]
 	unset output
 
