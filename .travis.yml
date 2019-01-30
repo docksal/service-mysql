@@ -1,24 +1,29 @@
-language: bash
+dist: xenial
 
-services:
-  - docker
+language: minimal
 
 env:
   global:
     - REPO=docksal/mysql
 
   matrix:
-    - VERSION=8.0 TAGS=8
-    - VERSION=5.7 TAGS=5
-    - VERSION=5.6 TAGS=latest
-    - VERSION=5.5
+    - VERSION=5.5 TAGS=5.5
+    - VERSION=5.6 TAGS=5.6,latest
+    - VERSION=5.7 TAGS=5.7
+    - VERSION=8.0 TAGS=8.0
 
 install:
+  # Install Docksal to have a matching versions of Docker on the build host
+  - curl -fsSL https://get.docksal.io | bash
+  - fin version
+  - fin sysinfo
+
+script:
   - make
   - make test
 
 after_success:
-  - . "${TRAVIS_BUILD_DIR}/release.sh"
+  - ${TRAVIS_BUILD_DIR}/release.sh
 
 after_failure:
   - make logs

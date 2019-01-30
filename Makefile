@@ -2,7 +2,7 @@
 
 VERSION ?= 8.0
 TAG ?= $(VERSION)
-REPO ?= docksal/db
+REPO ?= docksal/mysql
 
 NAME = docksal-db-$(VERSION)
 
