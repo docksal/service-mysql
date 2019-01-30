@@ -55,7 +55,7 @@ _healthcheck_wait ()
 # To work on a specific test:
 # run `export SKIP=1` locally, then comment skip in the test you want to debug
 
-@test "MySQL initialization" {
+@test "Container initialization" {
 	[[ $SKIP == 1 ]] && skip
 
 	### Setup ###
