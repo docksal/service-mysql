@@ -1,10 +1,11 @@
 -include env_make
 
-VERSION ?= 8.0
+FROM ?= mysql:5.6
+VERSION ?= 5.6
 TAG ?= $(VERSION)
 REPO ?= docksal/mysql
 
-NAME = docksal-db-$(VERSION)
+NAME = docksal-mysql-$(VERSION)
 
 MYSQL_ROOT_PASSWORD = root
 MYSQL_USER = user
@@ -22,7 +23,7 @@ endif
 .PHONY: build test push shell run start stop logs clean release
 
 build:
-	docker build -t $(REPO):$(TAG) --build-arg VERSION=$(VERSION) .
+	docker build -t $(REPO):$(TAG) --build-arg FROM=$(FROM) --build-arg VERSION=$(VERSION) .
 
 test:
 	IMAGE=$(REPO):$(TAG) NAME=$(NAME) VERSION=$(VERSION) bats ./tests/test.bats
