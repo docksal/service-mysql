@@ -60,7 +60,9 @@ _healthcheck_wait ()
 
 	### Setup ###
 	make start -e VOLUMES="-v $(pwd)/tests:/var/www"
-	_healthcheck_wait
+
+	run _healthcheck_wait
+	unset output
 
 	### Tests ###
 	# MySQL does a restart, so there should be two of these in the logs after a successful start
