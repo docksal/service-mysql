@@ -1,8 +1,8 @@
-# Database Docker images for Docksal
+# MySQL Docker images for Docksal
 
 Docksal MySQL images are derived from the stock `mysql` images from Docker Hub with a few adjustments (see Features).  
 
-We include  and enable user defined overrides via a settings file. 
+We include and enable user defined overrides via a settings file. 
 
 This image(s) is part of the [Docksal](http://docksal.io) image library.
 
@@ -17,7 +17,6 @@ This image(s) is part of the [Docksal](http://docksal.io) image library.
 
 ## Versions
 
-- `mysql-5.5`
-- `mysql-5.6`, `latest`
-- `mysql-5.7`
-- `mysql-8.0`
+- `docksal/mysql:5.6`, `docksal/mysql:latest`
+- `docksal/mysql:5.7`
+- `docksal/mysql:8.0`

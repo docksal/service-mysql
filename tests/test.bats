@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 # Debugging
-teardown() {
+teardown () {
 	echo
 	echo "Output:"
 	echo "================================================================"
@@ -19,9 +19,9 @@ _healthcheck ()
 	# Wait for 5s then exit with 0 if a container does not have a health status property
 	# Necessary for backward compatibility with images that do not support health checks
 	if [[ $? != 0 ]]; then
-	echo "Waiting 10s for container to start..."
-	sleep 10
-	return 0
+		echo "Waiting 10s for container to start..."
+		sleep 10
+		return 0
 	fi
 
 	# If it does, check the status
@@ -29,8 +29,6 @@ _healthcheck ()
 }
 
 # Waits for containers to become healthy
-# For reasoning why we are not using  `depends_on` `condition` see here:
-# https://github.com/docksal/docksal/issues/225#issuecomment-306604063
 _healthcheck_wait ()
 {
 	# Wait for cli to become ready by watching its health status
@@ -40,17 +38,15 @@ _healthcheck_wait ()
 	local elapsed=0
 
 	until _healthcheck "$container_name"; do
-	echo "Waiting for $container_name to become ready..."
-	sleep "$delay";
+		echo "Waiting for $container_name to become ready..."
+		sleep "$delay";
 
-	# Give the container 30s to become ready
-	elapsed=$((elapsed + delay))
-	if ((elapsed > timeout)); then
-		echo-error "$container_name heathcheck failed" \
-			"Container did not enter a healthy state within the expected amount of time." \
-			"Try ${yellow}fin restart${NC}"
-		exit 1
-	fi
+		# Give the container 30s to become ready
+		elapsed=$((elapsed + delay))
+		if ((elapsed > timeout)); then
+			echo "$container_name heathcheck failed"
+			exit 1
+		fi
 	done
 
 	return 0
@@ -59,11 +55,11 @@ _healthcheck_wait ()
 # To work on a specific test:
 # run `export SKIP=1` locally, then comment skip in the test you want to debug
 
-@test "MySQL initialization" {
+@test "Container initialization" {
 	[[ $SKIP == 1 ]] && skip
 
 	### Setup ###
-	make start -e VOLUMES="-v $(pwd)/../tests:/var/www"
+	make start -e VOLUMES="-v $(pwd)/tests:/var/www"
 	_healthcheck_wait
 
 	### Tests ###
@@ -89,7 +85,7 @@ _healthcheck_wait ()
 	mysqlVars=$(make -s mysql-query QUERY='SHOW VARIABLES;')
 	# Compare with the expected values
 	# This will trigger a diff only when a variable from mysql-variables.txt is missing or modified in $mysqlVars
-	run bash -c "echo '$mysqlVars' | diff --changed-group-format='%<' --unchanged-group-format='' mysql-variables.txt -"
+	run bash -c "echo '$mysqlVars' | diff --changed-group-format='%<' --unchanged-group-format='' ${VERSION}/mysql-variables.txt -"
 	[[ "$output" == "" ]]
 	unset output
 }
@@ -98,7 +94,7 @@ _healthcheck_wait ()
 	[[ $SKIP == 1 ]] && skip
 
 	# Check the custom settings file is in place
-	run make exec -e CMD='cat /etc/mysql/conf.d/99-overrides.cnf'
+	run make exec CMD="cat /etc/mysql/conf.d/99-overrides.cnf"
 	[[ "$output" =~ "slow_query_log = ON" ]]
 	unset output
 
