@@ -16,8 +16,8 @@ COPY docker-postinit-entrypoint.patch /usr/local/bin/docker-postinit-entrypoint.
 
 # Apply patch for running scripts placed in /docker-entrypoint.d/* by root
 RUN set -xe; \
-    sed -i -e '/\$(id -u)/r /usr/local/bin/docker-preinit-entrypoint.patch' /usr/local/bin/docker-entrypoint.sh; \
-    sed -n -i -e '/ls \/docker-entrypoint-initdb.d\/ > \/dev\/null/ r /usr/local/bin/docker-postinit-entrypoint.patch' -e 1x -e '2,${x;p}' -e '${x;p}' /usr/local/bin/docker-entrypoint.sh; \
+    sed -i -e '/Switching to dedicated user/r /usr/local/bin/docker-preinit-entrypoint.patch' /usr/local/bin/docker-entrypoint.sh; \
+    sed -n -i -e '/docker_process_init_files \/docker-entrypoint-initdb.d\/\*/ r /usr/local/bin/docker-postinit-entrypoint.patch' -e 1x -e '2,${x;p}' -e '${x;p}' /usr/local/bin/docker-entrypoint.sh; \
     rm -f /usr/local/bin/docker-preinit-entrypoint.patch /usr/local/bin/docker-postinit-entrypoint.patch
 
 EXPOSE 3306
