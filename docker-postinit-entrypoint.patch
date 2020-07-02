@@ -1,0 +1,1 @@
+			docker_process_init_files /var/www/.docksal/services/db/*
