@@ -17,6 +17,5 @@ This image(s) is part of the [Docksal](http://docksal.io) image library.
 
 ## Versions
 
-- `docksal/mysql:5.6`, `docksal/mysql:latest`
 - `docksal/mysql:5.7`
-- `docksal/mysql:8.0`
+- `docksal/mysql:8.0`, `docksal/mysql:latest`
