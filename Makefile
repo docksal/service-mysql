@@ -1,7 +1,7 @@
 -include env_make
 
-FROM ?= mysql:5.6
-VERSION ?= 5.6
+FROM ?= mysql:5.7
+VERSION ?= 5.7
 BUILD_TAG ?= $(VERSION)
 SOFTWARE_VERSION ?= $(VERSION)
 
