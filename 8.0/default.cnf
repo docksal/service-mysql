@@ -1,5 +1,7 @@
 [client]
 default-character-set = utf8mb4
+# mysql:8.0-oracle upstream image does not set the socket location for mysql clients, so we have to set it here
+socket = /var/run/mysqld/mysqld.sock
 
 [mysql]
 default-character-set = utf8mb4
